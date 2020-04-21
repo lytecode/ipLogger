@@ -2,8 +2,9 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -11,6 +12,6 @@ app.get("/", (req, res) => {
   res.json({ msg: "logging....." });
 });
 
-app.listen(5000, () => {
+app.listen(PORT, () => {
   console.log("App started on port 5000 ...");
 });
