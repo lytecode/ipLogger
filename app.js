@@ -7,8 +7,8 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/logger", (req, res) => {
-  console.log(req);
-  res.send("logging.....");
+  console.log("Loging from logger endpoint"); //(req);
+  res.json({ msg: "logging....." });
 });
 
 app.listen(5000, () => {
