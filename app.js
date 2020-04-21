@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/logger", (req, res) => {
+app.get("/", (req, res) => {
   console.log("Loging from logger endpoint"); //(req);
   res.json({ msg: "logging....." });
 });
