@@ -1,22 +1,27 @@
 const express = require("express");
 const cors = require("cors");
-const axios = require("axios");
-const dns = require("dns");
-
 const app = express();
 const PORT = process.env.PORT || 5000;
+const mongoose = require("mongoose");
+const IpLogger = require("./IPLogger");
+
+//connection to database
+mongoose.connect(
+  process.env.MongoDB_URI,
+  { useNewUrlParser: true, useUnifiedTopology: true }
+  //   { useUnifiedTopology: true }
+);
+const db = mongoose.connection;
+db.on("connected", () => console.log("db connected successfully"));
+db.on("error", () =>
+  console.log("Ooops! Something went wrong with db connection")
+);
 
 app.use(cors());
 app.use(express.json());
 
 app.post("/", (req, res) => {
   console.log("Start logging req ...."); //(req);
-
-  //   dns.lookup("https://goal.com", (err, address, family) => {
-  //     if (err) throw err;
-  //     //   console.log(`addresses: ${JSON.stringify(addresses)}`);
-  //     console.log("address: %j family: IPv%s", address, family);
-  //   });
 
   console.log({
     body: req.body,
@@ -33,6 +38,13 @@ app.post("/", (req, res) => {
     subdomains: req.subdomains,
     xhr: req.xhr,
   });
+
+  const newIp = new IpLogger({
+    ip: req.ip,
+    ips: req.ips,
+  });
+
+  newIp.save();
 
   res.json({ msg: "end logging....." });
 });
