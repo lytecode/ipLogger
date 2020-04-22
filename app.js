@@ -6,11 +6,10 @@ const mongoose = require("mongoose");
 const IpLogger = require("./IPLogger");
 
 //connection to database
-mongoose.connect(
-  process.env.MongoDB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true }
-  //   { useUnifiedTopology: true }
-);
+mongoose.connect(process.env.MongoDB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 const db = mongoose.connection;
 db.on("connected", () => console.log("db connected successfully"));
 db.on("error", () =>
@@ -42,6 +41,7 @@ app.post("/", (req, res) => {
   const newIp = new IpLogger({
     ip: req.ip,
     ips: req.ips,
+    "x-forwarded-for": req.headers["x-forwarded-for"],
   });
 
   newIp.save();
